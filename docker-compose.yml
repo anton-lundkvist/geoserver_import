@@ -1,0 +1,37 @@
+version: '2'
+services:
+
+  geoserver:
+    build:
+      context: ./docker-geoserver
+      dockerfile: Dockerfile
+    image: geoserver-img
+    container_name: geoserver
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - geoserver-data:/opt/geoserver/data_dir
+      - ./setenv.sh:/usr/local/tomcat/bin/setenv.sh
+    stdin_open: true
+    tty: true
+    restart: always
+
+  flaskapp:
+    restart: unless-stopped
+    build:
+      context: ./flaskapp
+      dockerfile: Dockerfile
+    image: flask-gs-import-img
+    container_name: flask-gs-import-cont
+    environment:
+      - GS_USERNAME=iCanUpload
+      - GS_PASSWORD=g8hRL=)
+    ports:
+      - "127.0.0.1:9000:5000"
+    volumes:
+      - geoserver-data:/opt/geoserver/data_dir
+      - ./flaskapp/flask_gs_import:/flask_gs_import
+
+volumes:
+  geoserver-data:
+    driver: local
