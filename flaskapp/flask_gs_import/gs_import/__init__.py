@@ -7,7 +7,7 @@ import jwt
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder=os.path.join('ui', 'build'))
-app.config.from_object('gs_import.config.DevelopmentConfig')
+app.config.from_object('gs_import.config.ProductionConfig')
 CORS(app)
 
 

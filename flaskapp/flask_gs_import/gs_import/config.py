@@ -3,8 +3,8 @@ import os
 
 class Config(object):
     DEBUG = False
-    GS_USERNAME = os.environ['GS_USERNAME']
-    GS_PASSWORD = os.environ['GS_PASSWORD']
+    USERNAME = os.environ['USERNAME']
+    PASSWORD = os.environ['PASSWORD']
     GEOSERVER_DATA_DIR = '/opt/geoserver/data_dir/data'
     SECRET_KEY = 'kljsdf8797234nbkshd__sdfjjsdf'
     TESTING = False

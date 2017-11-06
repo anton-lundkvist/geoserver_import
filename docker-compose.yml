@@ -24,8 +24,8 @@ services:
     image: flask-gs-import-img
     container_name: flask-gs-import-cont
     environment:
-      - GS_USERNAME=iCanUpload
-      - GS_PASSWORD=g8hRL=)
+      - USERNAME=iCanUpload
+      - PASSWORD=g8hRL=)
     ports:
       - "127.0.0.1:9000:5000"
     volumes:

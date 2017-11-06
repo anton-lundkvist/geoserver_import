@@ -14,7 +14,7 @@ def auth():
         if 'password' in req_obj:
             username = req_obj['username']
             password = req_obj['password']
-            if username == app.config['GS_USERNAME'] and password == app.config['GS_PASSWORD']:
+            if username == app.config['USERNAME'] and password == app.config['PASSWORD']:
                 token = jwt.encode(
                     {'username': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
                     app.config['SECRET_KEY'])
@@ -32,6 +32,6 @@ def validate_token():
         try:
             jwt.decode(token, app.config['SECRET_KEY'])
         except jwt.exceptions.InvalidTokenError:
-            return error_response('Token expired or not valid', 401)
+            return error_response('You are logged out', 401)
         return success_response(token)
     return error_response('Parameter token is required')

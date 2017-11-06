@@ -46,7 +46,7 @@ class UploadPage extends React.Component {
         let {err, success} = this.state;
         if (err) {
             return (
-                <Message size='small' negative>
+                <Message icon size='small' negative>
                     <Icon size='large' name='exclamation circle'/>
                     {err}
                 </Message>
@@ -54,7 +54,7 @@ class UploadPage extends React.Component {
         } else if (success) {
             let link = <a href='#' onClick={()=>{this.props.dispatch(set_filter_text(success))}}>{success}</a>;
             return (
-                <Message size='small' positive>
+                <Message icon size='small' positive>
                     <Icon size='large' name='check'/>
                     {<p>Your data was uploaded to folder {link}</p>}
                 </Message>
@@ -119,7 +119,8 @@ class UploadPage extends React.Component {
 const mapStateToProps = state => {
     return {
         upload: state.upload,
-        user_message: state.user_message
+        user_message: state.user_message,
+        dir_tree: state.dir_tree
     }
 };
 

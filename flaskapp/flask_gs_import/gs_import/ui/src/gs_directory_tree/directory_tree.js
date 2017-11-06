@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {Icon, Form} from 'semantic-ui-react'
+import {Icon, Form, Segment, Button} from 'semantic-ui-react'
 import {Treebeard, decorators} from 'react-treebeard';
 import {get_dir_tree, set_filter_text} from "../store/actions/dir_tree_actions";
 import * as filters from './tree_filters';
@@ -108,15 +108,16 @@ class DirectoryTree extends React.Component {
     componentDidMount = () => {
         this.props.dispatch(get_dir_tree())
             .then(success => {
-                this.initData()
+                this.initData(this.props.dir_tree.dir_tree)
             })
     };
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.dir_tree.dir_tree) {
-            this.initData();
+            this.initData(nextProps.dir_tree.dir_tree);
         }
-        this.handleFilter(nextProps.dir_tree.filterText)
+            this.handleFilter(nextProps.dir_tree.filterText, nextProps.dir_tree.dir_tree)
+
     };
 
     onToggle = (node, toggled) => {
@@ -130,17 +131,19 @@ class DirectoryTree extends React.Component {
         this.setState({cursor: node});
     };
 
-    initData = () => {
-        this.setState({data: this.props.dir_tree.dir_tree})
+    initData = (data) => {
+        this.setState({data: data})
     };
 
     handleChange = (e, {name, value}) => {
         this.props.dispatch(set_filter_text(value));
     };
 
-    handleFilter = (value) => {
-        if (value === '') {
-            return this.setState({data: this.props.dir_tree.dir_tree});
+    handleFilter = (value, data) => {
+        if (value === '' && data) {
+            return this.setState({data: data});
+        }else if(value === '' && data === undefined){
+            return this.setState({data:this.props.dir_tree.dir_tree})
         }
         let filtered = filters.filterTree(this.props.dir_tree.dir_tree, value);
         filtered = filters.expandFilteredNodes(filtered, value);
@@ -152,6 +155,7 @@ class DirectoryTree extends React.Component {
         return (
             <div>
                 <Form>
+                    <Form.Group inline>
                     <Form.Input
                         name='searchField'
                         value={this.props.dir_tree.filterText}
@@ -159,13 +163,23 @@ class DirectoryTree extends React.Component {
                         fluid
                         icon='search'
                         placeholder='Search file...'
+                        width={13}
                     />
+                        <Form.Button
+                            loading={this.props.dir_tree.processing_get}
+                            icon='refresh'
+                            onClick={()=>{this.props.dispatch(get_dir_tree())}}
+                            width={3}
+                        />
+                    </Form.Group>
                 </Form>
+                <Segment basic>
                 <Treebeard
                     data={this.state.data}
                     onToggle={this.onToggle}
                     style={treeStyle}
                 />
+                </Segment>
             </div>
         )
     }

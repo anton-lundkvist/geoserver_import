@@ -1,9 +1,10 @@
 import os
 from ..app_exceptions.app_exceptions import AppException
+from .. import app
 
 VALID_EXTENSIONS = (
     '.shp', '.shx', '.dbf', '.prj', '.sbn', '.sbx', '.fbn', '.fbx', '.ain', '.aih', '.ixs', '.mxs', '.atx', '.shp.xml',
-    '.cpg', '.qix')
+    '.cpg', '.qix', '.csv', '.txt')
 
 
 def is_shp_file(file_names):
